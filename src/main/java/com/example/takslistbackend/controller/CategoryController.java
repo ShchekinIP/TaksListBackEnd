@@ -1,8 +1,7 @@
-package com.example.takslistbackend.entity.controller;
+package com.example.takslistbackend.controller;
 
 
 import com.example.takslistbackend.entity.CategoryEntity;
-import com.example.takslistbackend.entity.PriorityEntity;
 import com.example.takslistbackend.repo.CategoryRepository;
 import com.example.takslistbackend.search.CategorySearchValues;
 import org.springframework.dao.EmptyResultDataAccessException;

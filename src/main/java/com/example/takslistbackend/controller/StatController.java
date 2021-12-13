@@ -1,4 +1,4 @@
-package com.example.takslistbackend.entity.controller;
+package com.example.takslistbackend.controller;
 
 import com.example.takslistbackend.entity.StatEntity;
 import com.example.takslistbackend.repo.StatRepository;
