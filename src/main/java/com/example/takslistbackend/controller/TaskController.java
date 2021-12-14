@@ -3,6 +3,7 @@ package com.example.takslistbackend.controller;
 import com.example.takslistbackend.entity.TaskEntity;
 import com.example.takslistbackend.repo.TaskRepository;
 import com.example.takslistbackend.search.TaskSearchValues;
+import com.example.takslistbackend.service.TaskService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,15 +19,15 @@ import java.util.function.LongFunction;
 @RequestMapping("/task")
 public class TaskController {
 
-    private final TaskRepository taskRepository;
+    private final TaskService taskService;
 
-    public TaskController(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
     }
 
     @GetMapping("/all")
     public ResponseEntity<List<TaskEntity>> findAll() {
-        return ResponseEntity.ok(taskRepository.findAll());
+        return ResponseEntity.ok(taskService.findAll());
     }
 
     @PostMapping("/add")
@@ -39,7 +40,7 @@ public class TaskController {
             return new ResponseEntity("", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(taskRepository.save(task));
+        return ResponseEntity.ok(taskService.add(task));
 
     }
 
@@ -53,14 +54,14 @@ public class TaskController {
             return new ResponseEntity("", HttpStatus.NOT_ACCEPTABLE);
         }
 
-        return ResponseEntity.ok(taskRepository.save(task));
+        return ResponseEntity.ok(taskService.update(task));
 
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
         try {
-            taskRepository.deleteById(id);
+            taskService.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
         }
@@ -70,7 +71,7 @@ public class TaskController {
 
     @GetMapping("/id/{id}")
     public ResponseEntity<TaskEntity> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(taskRepository.findById(id).get());
+        return ResponseEntity.ok(taskService.findById(id));
     }
 
     @PostMapping("/search")
@@ -90,7 +91,7 @@ public class TaskController {
 
         Sort sort = Sort.by(direction,sortColumn);
         PageRequest pageRequest = PageRequest.of(taskSearchValues.getPageNumber(), taskSearchValues.getPageSize());
-        Page result = taskRepository.findByParams(title, completed, priorityId, categoryId, pageRequest);
+        Page result = taskService.findByParams(title, completed, priorityId, categoryId, pageRequest);
         return ResponseEntity.ok(result);
     }
 }
