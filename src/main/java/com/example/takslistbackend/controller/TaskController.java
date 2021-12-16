@@ -17,9 +17,13 @@ import java.util.function.LongFunction;
 
 @RestController
 @RequestMapping("/task")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TaskController {
 
-    private final TaskService taskService;
+    private TaskService taskService;
+
+    public TaskController() {
+    }
 
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
@@ -76,7 +80,7 @@ public class TaskController {
 
     @PostMapping("/search")
     public ResponseEntity<Page<TaskEntity>> search(@RequestBody TaskSearchValues taskSearchValues) {
-        String title = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
+        String text = taskSearchValues.getTitle() != null ? taskSearchValues.getTitle() : null;
         Integer completed = taskSearchValues.getCompleted() != null ? taskSearchValues.getCompleted() : null;
         Long priorityId = taskSearchValues.getPriorityId() != null ? taskSearchValues.getPriorityId() : null;
         Long categoryId = taskSearchValues.getCategoryId() != null ? taskSearchValues.getCategoryId() : null;
@@ -91,7 +95,7 @@ public class TaskController {
 
         Sort sort = Sort.by(direction,sortColumn);
         PageRequest pageRequest = PageRequest.of(taskSearchValues.getPageNumber(), taskSearchValues.getPageSize());
-        Page result = taskService.findByParams(title, completed, priorityId, categoryId, pageRequest);
+        Page result = taskService.findByParams(text, completed, priorityId, categoryId, pageRequest);
         return ResponseEntity.ok(result);
     }
 }

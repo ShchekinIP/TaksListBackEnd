@@ -4,10 +4,12 @@ import com.example.takslistbackend.entity.StatEntity;
 import com.example.takslistbackend.repo.StatRepository;
 import com.example.takslistbackend.service.StatService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class StatController {
 
     private StatService statService;
